@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 9000;
 connectDB()
 
 // Mount task routes
-app.use('/tasks', taskRoutes);
+app.use('api/v1/tasks', taskRoutes);
 
 // Start the server
 clusterSetup(app);
