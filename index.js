@@ -8,6 +8,7 @@ const connectDB = require('./configb/db')
 const queueTask = require('./utils/taskQueue');
 const processTask = require('./utils/taskProcessor');
 const { rateLimit } = require('./utils/rateLimit');
+const taskController = require('./controller/TaskController'); 
 
 dotenv.config();
 
@@ -33,6 +34,11 @@ app.post('/api/v1/tasks', (req, res) => {
     // Queue the task and respond immediately
     queueTask(userId, () => processTask(userId, task));
     res.status(200).send({ message: 'Task queued' });
+});
+
+app.delete('/api/v1/tasks/clear', (req, res) => {
+    // Call the clearTaskQueue method from the task controller
+    taskController.clearTaskQueue(req, res);
 });
 
 clusterSetup(app);
