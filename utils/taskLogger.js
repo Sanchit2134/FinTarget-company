@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Define the log file path
 const logFilePath = path.join(__dirname, 'taskLogs.txt');
 
 const logTaskCompletion = (userId,task) => {

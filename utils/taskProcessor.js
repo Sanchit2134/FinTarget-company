@@ -3,7 +3,7 @@ const processTask = (userId) => {
         setTimeout(() => {
             console.log(`Task processed for user ${userId}`);
             resolve();
-        }, 1000); // Simulate task processing time
+        }, 1000); 
     });
 };
 

@@ -8,17 +8,14 @@ exports.handleTask = async (req, res) => {
       const {userId,task} = req.body; 
       console.log(req.body)
 
-      // Check if userId and task are provided
       if (!userId || !task) {
           return res.status(400).json({ error: "User ID and task are required" });
       }
 
-      // Apply rate limit check
       if (!rateLimit(userId, task)) {
           return res.status(429).json({ error: "Rate limit exceeded" });
       }
 
-      // Task handling logic here...
       res.status(201).json({ message: "Task created successfully" });
   } catch (error) {
       console.error("Error in handleTask:", error);
@@ -27,20 +24,17 @@ exports.handleTask = async (req, res) => {
 };
 
 
-// async function processNextTask(userId) {
-//   const nextTask = await TaskModel.findOneAndDelete({ userId }, { sort: { timestamp: 1 } });
-//   if (nextTask) {
-//     await processTask(userId, nextTask.task);
-//   }
-// }
-
-async function processTask(userId, task) {
-  // Task processing logic
+async function processNextTask(userId) {
+  const nextTask = await TaskModel.findOneAndDelete({ userId }, { sort: { timestamp: 1 } });
+  if (nextTask) {
+    await processTask(userId, nextTask.task);
+  }
 }
+
 
 exports.clearTaskQueue = (req, res) => {
   try {
-      // Clearing logic (assuming it's a simple reset of taskQueue)
+      
       const { taskQueue } = require('../utils/rateLimit');
       taskQueue.clear();
       res.status(200).json({ message: "Task queue cleared successfully" });

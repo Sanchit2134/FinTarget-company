@@ -26,18 +26,15 @@ app.post('/api/v1/tasks', (req, res) => {
         return res.status(400).send({ error: 'userId and taskData are required' });
     }
 
-    // Check if the user can perform the task (rate limiting)
     if (!rateLimit(userId, task)) {
         return res.status(429).send({ error: 'Rate limit exceeded' });
     }
 
-    // Queue the task and respond immediately
     queueTask(userId, () => processTask(userId, task));
     res.status(200).send({ message: 'Task queued' });
 });
 
 app.delete('/api/v1/tasks/clear', (req, res) => {
-    // Call the clearTaskQueue method from the task controller
     taskController.clearTaskQueue(req, res);
 });
 
